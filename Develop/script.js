@@ -1,9 +1,44 @@
 // Assignment code here
-// generate random number of characters
-let randomNumber = function(min, lengthMax) {
-  // let value = Math.floor(Math.random() * (lengthMax - min) + min);
-  let value = lengthMax - min;
-  return value;
+const capLetters = [
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+  'G',
+  'H',
+  'I',
+  'J',
+  'K',
+  'L',
+  'M',
+  'N',
+  'O',
+  'P',
+  'Q',
+  'R',
+  'S',
+  'T',
+  'U',
+  'V',
+  'W',
+  'X',
+  'Y',
+  'Z'
+];
+// generate random number of characters by taking user input number, then returning the index of a random number
+let randomNumber = function(lengthMax) {
+  
+    let value = Math.floor(Math.random() * 26);
+    
+    console.log(capLetters[value]);
+    return capLetters[value];
+  
+  
+
+
+  
 }
 
 // let critera = function() {
@@ -14,9 +49,17 @@ let randomNumber = function(min, lengthMax) {
 // Upon clicking the button, prompt the user with a series of password critera
 let generatePassword = function() {
   let lengthMax = window.prompt("How many characters should your password be?")
- let options = randomNumber(8, lengthMax);
+  // initialize the empty string to be appended to
+  let string = "";
 
- return options;
+  // loop through the capital letters for as long as the user indicated then append those obtained random letters to the string variable
+  for (i = 0; i < lengthMax; i++) {
+    let options = randomNumber(lengthMax);
+    console.log(randomNumber(lengthMax));
+    string = string + options;
+  }
+  // returns the newly appended string variable so generatePassword() equals the mix of capital letters
+ return string;
 
 }
 // password should equal number of characters user chooses
