@@ -80,21 +80,32 @@ const numCharacters = [
   '7',
   '8',
   '9'
-]
+];
 
 
-// generate random number of characters by taking user input number, then returning the index of a random number
-let randomElement = function(array) {
-  
-    let value = Math.floor(Math.random() * array.length);
 
-    return array[value]; 
-}
+
 
 
 // prompt questions
 let promptQuestions = function() {
-  let lengthMax = window.prompt("How many characters should your password be?")
+  let lengthMax = parseInt(
+    window.prompt("How many characters should your password be?"))
+
+  if (Number.isNaN(lengthMax)) {
+    window.alert("password length must be provided as a number");
+    return null;
+  }
+
+  if (lengthMax < 8) {
+    window.alert("password must be at least 8 characters");
+    return null;
+  }
+
+  if (lengthMax > 128) {
+    window.alert("password must be less than 129 characters");
+    return null;
+  }
 
   let specChar = window.confirm("Include special characters?");
 
@@ -104,6 +115,18 @@ let promptQuestions = function() {
 
   let upperCaseChar = window.confirm("Include uppercase characters?");
 
+  // ensure they pick at least one criteria
+  if (
+    specChar === false &&
+    numChar === false &&
+    lowerCaseChar === false &&
+    upperCaseChar === false
+  ) {
+    window.alert("must pick at least one");
+    return null;
+  }
+
+  // stores user input in an object
   let passwordCriteria = {
     lengthMax: lengthMax,
     specChar: specChar,
@@ -113,6 +136,14 @@ let promptQuestions = function() {
   };
 
   return passwordCriteria;
+}
+
+// generate random number of characters by taking user input number, then returning the index of a random number
+let randomElement = function(array) {
+  
+  let value = Math.floor(Math.random() * array.length);
+
+  return array[value]; 
 }
 
 // Upon clicking the button, prompt the user with a series of password critera
@@ -128,14 +159,51 @@ let generatePassword = function() {
 
   let necessaryChars = [];
 
+  if (!criteria) return null;
+
+  // special characters
+  if (criteria.specChar === true) {
+    additionalChars = additionalChars.concat(specialChars);
+    necessaryChars.push(randomElement(specialChars));
+    
+    
+  }
+
+  // Numbers
+  if (criteria.numChar === true) {
+    additionalChars = additionalChars.concat(numCharacters);
+    necessaryChars.push(randomElement(numCharacters));
+  }
+
+  // lowercase letters
+  if (criteria.lowerCaseChar === true) {
+    additionalChars = additionalChars.concat(lowLetters);
+    necessaryChars.push(randomElement(lowLetters));
+  }
+
+  // uppercase letters
   if (criteria.upperCaseChar === true) {
     additionalChars = additionalChars.concat(capLetters);
     necessaryChars.push(randomElement(capLetters));
   }
 
+  // loop over password length from criteria object
+  for (i = 0; i < criteria.lengthMax; i++) {
+    let possibleChar = randomElement(additionalChars);
+
+    console.log(criteria);
+    string.push(possibleChar);
+    
+  }
+
+  // loop to get one of each character in the resulting string
+  for (i = 0; i < necessaryChars.length; i++) {
+    string[i] = necessaryChars[i];
+  }
 
 
- return string;
+
+ return string.join('');
 
 }
 // password should equal number of characters user chooses
